@@ -5,32 +5,57 @@
 [Idea](idea.md) | [Use Case](useCaseDiagram.md) | [Sequence](sequenceDiagram.md) | [Class Diagram](classDiagram.md) | [ER Diagram](ErDiagram.md)
 ---
 
+## Collaborative Shopping Flow
+
 ```mermaid
 sequenceDiagram
     autonumber
-    participant U as User
-    participant F as Frontend (Next.js)
-    participant A as AI Agent (GPT-4o)
-    participant B as Backend API
-    participant DB as Database (Postgres/Vector)
+    actor U as Customer
+    participant F as Web/Mobile App
+    participant AI as AI Stylist (GPT-4o)
+    participant B as Backend Server
+    participant DB as Postgres & Vector DB
 
-    U->>F: "I need a red dress for a gala"
-    F->>A: Process query with User Context
-    A->>B: Request products matching tags/style
-    B->>DB: Query Database (Semantic Search)
-    DB-->>B: Return relevant products
-    B-->>A: Product Details
-    A-->>F: Curated recommendations with styling tips
-    F->>U: Display AI Suggestions
-    U->>F: Selects Item & Add to Cart
-    F->>B: Create Order/Cart Session
-    B->>DB: Save Cart Information
-    U->>F: Checkout & Payment
-    F->>B: Finalize Purchase
-    B->>DB: Update Inventory & Order Status
-    B-->>F: Order Confirmation
-    F-->>U: "Your order is on the way!"
+    U->>F: "Find me a casual summer look"
+    activate F
+    F->>AI: Send prompt + User Style Profile
+    activate AI
+    Note right of AI: AI analyzes preferences <br/>and current trends.
+    AI->>B: Query for tags: [linen, light-colors, relaxed]
+    activate B
+    B->>DB: Semantic Vector Search
+    DB-->>B: Top 10 matching products
+    B-->>AI: List of products with details
+    deactivate B
+    AI-->>F: Curated outfit recommendation
+    deactivate AI
+    F-->>U: Displays styled outfit options
+    deactivate F
+
+    U->>F: "I love this! Add to my virtual closet"
+    F->>B: Save to Closet
+    B->>DB: Update User Preferences
+    
+    U->>F: Proceed to Checkout
+    activate F
+    F->>B: Initialize Secure Transaction
+    B->>DB: Reserve Stock & Create Order
+    B-->>F: Payment UI Request
+    F-->>U: "Confirm and Pay"
+    deactivate F
 ```
 
 ## Details
-The **Sequence Diagram** captures the dynamic behavior of the system during the core shopping journey. It visualizes the step-by-step communication between the User, the AI Agent, and the backend infrastructure. This helps in understanding the latency points and the logic flow required to translate natural language queries into actionable product results, covering the entire flow from initial query to order confirmation.
+
+### 🔄 The End-to-End Journey
+The sequence diagram above illustrates the sophisticated handshake between the user interface, the generative AI, and the data layers:
+
+1.  **Contextual Query**: The **Customer** doesn't just search; they describe an intent. The **App** passes this junto with the user's pre-defined **Style Profile** to give the AI context.
+2.  **Semantic Retrieval**: Instead of basic keyword matching, the **Backend** uses **Vector Search** in the database to find items that "feel" right based on the AI's refined search parameters.
+3.  **Styled Response**: The AI doesn't just return a list; it acts as a **Stylist**, explaining *why* these pieces work together for the requested "casual summer look."
+4.  **Transaction Consistency**: Once the user decides to buy, the system transitions from "creative exploration" to "secure transaction," ensuring inventory is reserved and the order is persisted correctly.
+
+### Technical Highlights
+- **Active Loops**: Shows simultaneous data fetching and AI processing.
+- **State Management**: Tracks how user decisions (adding to closet) influence future AI behavior.
+- **Stock Integrity**: Visualizes the critical step of inventory reservation before payment.
