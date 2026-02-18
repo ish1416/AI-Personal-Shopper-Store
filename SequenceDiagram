@@ -1,0 +1,36 @@
+# Sequence Diagram - Main Shopping Flow
+
+---
+### 📑 Navigation
+[Idea](idea.md) | [Use Case](useCaseDiagram.md) | [Sequence](sequenceDiagram.md) | [Class Diagram](classDiagram.md) | [ER Diagram](ErDiagram.md)
+---
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as User
+    participant F as Frontend (Next.js)
+    participant A as AI Agent (GPT-4o)
+    participant B as Backend API
+    participant DB as Database (Postgres/Vector)
+
+    U->>F: "I need a red dress for a gala"
+    F->>A: Process query with User Context
+    A->>B: Request products matching tags/style
+    B->>DB: Query Database (Semantic Search)
+    DB-->>B: Return relevant products
+    B-->>A: Product Details
+    A-->>F: Curated recommendations with styling tips
+    F->>U: Display AI Suggestions
+    U->>F: Selects Item & Add to Cart
+    F->>B: Create Order/Cart Session
+    B->>DB: Save Cart Information
+    U->>F: Checkout & Payment
+    F->>B: Finalize Purchase
+    B->>DB: Update Inventory & Order Status
+    B-->>F: Order Confirmation
+    F-->>U: "Your order is on the way!"
+```
+
+## Details
+The **Sequence Diagram** captures the dynamic behavior of the system during the core shopping journey. It visualizes the step-by-step communication between the User, the AI Agent, and the backend infrastructure. This helps in understanding the latency points and the logic flow required to translate natural language queries into actionable product results, covering the entire flow from initial query to order confirmation.
