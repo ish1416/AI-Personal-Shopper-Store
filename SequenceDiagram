@@ -9,40 +9,30 @@
 
 ```mermaid
 sequenceDiagram
-    autonumber
-    actor U as Customer
-    participant F as Web/Mobile App
-    participant AI as AI Stylist (GPT-4o)
-    participant B as Backend Server
-    participant DB as Postgres & Vector DB
+    participant Customer
+    participant App
+    participant AI_Stylist
+    participant Backend
+    participant Database
 
-    U->>F: "Find me a casual summer look"
-    activate F
-    F->>AI: Send prompt + User Style Profile
-    activate AI
-    Note right of AI: AI analyzes preferences <br/>and current trends.
-    AI->>B: Query for tags: [linen, light-colors, relaxed]
-    activate B
-    B->>DB: Semantic Vector Search
-    DB-->>B: Top 10 matching products
-    B-->>AI: List of products with details
-    deactivate B
-    AI-->>F: Curated outfit recommendation
-    deactivate AI
-    F-->>U: Displays styled outfit options
-    deactivate F
+    Customer->>App: "Find me a casual summer look"
+    App->>AI_Stylist: Send prompt + Style Profile
+    AI_Stylist->>Backend: Request matching products
+    Backend->>Database: Perform Vector Search
+    Database-->>Backend: Return Products
+    Backend-->>AI_Stylist: Product Details
+    AI_Stylist-->>App: Curated Recommendation
+    App-->>Customer: Display styled options
 
-    U->>F: "I love this! Add to my virtual closet"
-    F->>B: Save to Closet
-    B->>DB: Update User Preferences
-    
-    U->>F: Proceed to Checkout
-    activate F
-    F->>B: Initialize Secure Transaction
-    B->>DB: Reserve Stock & Create Order
-    B-->>F: Payment UI Request
-    F-->>U: "Confirm and Pay"
-    deactivate F
+    Customer->>App: "Add to my closet"
+    App->>Backend: Save items
+    Backend-->>App: Success
+
+    Customer->>App: Go to Checkout
+    App->>Backend: Initialize Order
+    Backend->>Database: Reserve Stock
+    Backend-->>App: Final Total
+    App-->>Customer: "Confirm Purchase"
 ```
 
 ## Details
