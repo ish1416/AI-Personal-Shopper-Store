@@ -5,51 +5,50 @@
 [Idea](idea.md) | [Use Case](useCaseDiagram.md) | [Sequence](sequenceDiagram.md) | [Class Diagram](classDiagram.md) | [ER Diagram](ErDiagram.md)
 ---
 
-## Collaborative Shopping Flow (Visual)
-![Shopping Sequence Diagram](sequence_diagram_fallback.png)
+## 📸 Visual Representation
 
-## Diagram Details
-
-### 🔄 The End-to-End Journey
-The sequence diagram above illustrates the sophisticated handshake between the user interface, the generative AI, and the data layers:
-
-1.  **Contextual Query**: The **Customer** doesn't just search; they describe an intent. The **App** passes this junto with the user's pre-defined **Style Profile** to give the AI context.
-2.  **Semantic Retrieval**: Instead of basic keyword matching, the **Backend** uses **Vector Search** in the database to find items that "feel" right based on the AI's refined search parameters.
-3.  **Styled Response**: The AI doesn't just return a list; it acts as a **Stylist**, explaining *why* these pieces work together for the requested "casual summer look."
-4.  **Transaction Consistency**: Once the user decides to buy, the system transitions from "creative exploration" to "secure transaction," ensuring inventory is reserved and the order is persisted correctly.
-
-### Technical Highlights
-- **Service-to-Service Communication**: Shows how the AI Stylist interacts with the Backend for data fulfillment.
-- **Data Persistence**: Visualizes the critical step of inventory updates and order confirmation.
-- **User Feedback**: Ensures the customer is notified at every major transition (Recommendations, Order Reservation, Confirmation).
+<p align="center">
+  <img src="./sequence_diagram_fallback.png" alt="Shopping Sequence Diagram" width="800">
+</p>
 
 ---
 
-## Mermaid Source (Editable)
+## 🤖 Interactive Mermaid Diagram
+If your viewer supports Mermaid, you should see the live diagram below:
+
 ```mermaid
 sequenceDiagram
-    participant Customer
-    participant App
-    participant AI_Stylist
-    participant Backend
-    participant Database
+    autonumber
+    actor User as Customer
+    participant App as Mobile/Web App
+    participant AI as AI Stylist
+    participant API as Backend API
+    participant DB as Product DB
 
-    Customer->>App: "Find me a casual summer look"
-    App->>AI_Stylist: Send prompt + Style Profile
-    AI_Stylist->>Backend: Request matching products
-    Backend->>Database: Perform Vector Search
-    Database-->>Backend: Return Products
-    Backend-->>AI_Stylist: Product Details
-    AI_Stylist-->>App: Curated Recommendation
-    App-->>Customer: Display styled options
+    User->>App: "Find me a casual summer look"
+    App->>AI: Request Recommendations (User Context)
+    AI->>API: Query matching products
+    API->>DB: Search tags/embeddings
+    DB-->>API: Result set
+    API-->>AI: Raw Product Data
+    AI-->>App: Curated Styled Outfit
+    App-->>User: Display Options
 
-    Customer->>App: "Add to my closet"
-    App->>Backend: Save items
-    Backend-->>App: Success
-
-    Customer->>App: Go to Checkout
-    App->>Backend: Initialize Order
-    Backend->>Database: Reserve Stock
-    Backend-->>App: Final Total
-    App-->>Customer: "Confirm Purchase"
+    User->>App: Selects items & Orders
+    App->>API: Process Transaction
+    API->>DB: Update Stock
+    API-->>App: Order Confirmed
+    App-->>User: "Thank you!"
 ```
+
+## 📝 Flow Details
+
+### 🔄 The End-to-End Journey
+1.  **Contextual Query**: The **Customer** describes an intent. The **App** passes this with the user's **Style Profile** to the AI.
+2.  **Semantic Retrieval**: The **Backend** uses **Vector Search** to find items that match the "feel" of the request.
+3.  **Styled Response**: The AI explains *why* these pieces work together.
+4.  **Transaction**: Ensures inventory is reserved and the order is saved securely.
+
+### Technical Highlights
+- **Service-to-Service**: Pure separation of UI, AI logic, and Data layers.
+- **Stock Integrity**: Real-time DB updates following AI recommendations.
