@@ -1,6 +1,9 @@
 # Class Diagram
 
-The following diagram represents the core class structure and relationships within the TypeScript application.
+---
+### 📑 Navigation
+[Idea](idea.md) | [Use Case](useCaseDiagram.md) | [Sequence](sequenceDiagram.md) | [Class Diagram](classDiagram.md) | [ER Diagram](ErDiagram.md)
+---
 
 ```mermaid
 classDiagram
@@ -58,3 +61,6 @@ classDiagram
     AIShopper ..> User : assists
     AIShopper ..> Product : recommends
 ```
+
+## Details
+The **Class Diagram** provides a structural blueprint of the application's codebase using TypeScript principles. It details the essential entities, their properties, methods, and the inheritance/association relationships between them. This serves as a guide for developers to implement the system using object-oriented or functional patterns consistently, focusing on core domains like User Profiles, Products, and Shopping Logic.
