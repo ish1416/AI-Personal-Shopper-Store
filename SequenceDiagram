@@ -5,8 +5,27 @@
 [Idea](idea.md) | [Use Case](useCaseDiagram.md) | [Sequence](sequenceDiagram.md) | [Class Diagram](classDiagram.md) | [ER Diagram](ErDiagram.md)
 ---
 
-## Collaborative Shopping Flow
+## Collaborative Shopping Flow (Visual)
+![Shopping Sequence Diagram](sequence_diagram_fallback.png)
 
+## Diagram Details
+
+### 🔄 The End-to-End Journey
+The sequence diagram above illustrates the sophisticated handshake between the user interface, the generative AI, and the data layers:
+
+1.  **Contextual Query**: The **Customer** doesn't just search; they describe an intent. The **App** passes this junto with the user's pre-defined **Style Profile** to give the AI context.
+2.  **Semantic Retrieval**: Instead of basic keyword matching, the **Backend** uses **Vector Search** in the database to find items that "feel" right based on the AI's refined search parameters.
+3.  **Styled Response**: The AI doesn't just return a list; it acts as a **Stylist**, explaining *why* these pieces work together for the requested "casual summer look."
+4.  **Transaction Consistency**: Once the user decides to buy, the system transitions from "creative exploration" to "secure transaction," ensuring inventory is reserved and the order is persisted correctly.
+
+### Technical Highlights
+- **Service-to-Service Communication**: Shows how the AI Stylist interacts with the Backend for data fulfillment.
+- **Data Persistence**: Visualizes the critical step of inventory updates and order confirmation.
+- **User Feedback**: Ensures the customer is notified at every major transition (Recommendations, Order Reservation, Confirmation).
+
+---
+
+## Mermaid Source (Editable)
 ```mermaid
 sequenceDiagram
     participant Customer
@@ -34,18 +53,3 @@ sequenceDiagram
     Backend-->>App: Final Total
     App-->>Customer: "Confirm Purchase"
 ```
-
-## Details
-
-### 🔄 The End-to-End Journey
-The sequence diagram above illustrates the sophisticated handshake between the user interface, the generative AI, and the data layers:
-
-1.  **Contextual Query**: The **Customer** doesn't just search; they describe an intent. The **App** passes this junto with the user's pre-defined **Style Profile** to give the AI context.
-2.  **Semantic Retrieval**: Instead of basic keyword matching, the **Backend** uses **Vector Search** in the database to find items that "feel" right based on the AI's refined search parameters.
-3.  **Styled Response**: The AI doesn't just return a list; it acts as a **Stylist**, explaining *why* these pieces work together for the requested "casual summer look."
-4.  **Transaction Consistency**: Once the user decides to buy, the system transitions from "creative exploration" to "secure transaction," ensuring inventory is reserved and the order is persisted correctly.
-
-### Technical Highlights
-- **Active Loops**: Shows simultaneous data fetching and AI processing.
-- **State Management**: Tracks how user decisions (adding to closet) influence future AI behavior.
-- **Stock Integrity**: Visualizes the critical step of inventory reservation before payment.
