@@ -29,6 +29,10 @@ const productSchema = new Schema<ProductDocument>(
   { timestamps: true }
 );
 
+// Full-text search index across name, description and tags
 productSchema.index({ name: 'text', description: 'text', tags: 'text' });
+// Compound index for category + price range queries
+productSchema.index({ category: 1, price: 1 });
+productSchema.index({ isActive: 1 });
 
 export const Product = model<ProductDocument>('Product', productSchema);
