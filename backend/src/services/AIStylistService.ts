@@ -62,7 +62,7 @@ ${productContext || 'No specific products found, suggest general style advice.'}
 Be warm, stylish, and concise. Recommend specific products when relevant. Always mention product names and prices.`;
 
     const response = await this.openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: 'gpt-4o-mini', // fallback to gpt-3.5-turbo if quota exceeded
       messages: [{ role: 'system', content: systemPrompt }, ...messages, { role: 'user', content: userMessage }],
       max_tokens: 500,
       temperature: 0.8,

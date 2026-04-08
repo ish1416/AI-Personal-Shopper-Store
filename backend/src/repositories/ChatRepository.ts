@@ -9,6 +9,10 @@ export class ChatSessionRepository extends BaseRepository<ChatSessionDocument> {
   async findByUserId(userId: string): Promise<ChatSessionDocument[]> {
     return this.model.find({ userId }).sort({ startedAt: -1 }).exec();
   }
+
+  async updateTitle(sessionId: string, title: string): Promise<ChatSessionDocument | null> {
+    return this.model.findByIdAndUpdate(sessionId, { title }, { new: true }).exec();
+  }
 }
 
 export class ChatMessageRepository extends BaseRepository<ChatMessageDocument> {
