@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import database from './config/database';
 import routes from './routes';
 import { errorHandler, notFound } from './middleware/errorHandler';
+import { rateLimit } from './middleware/rateLimit';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -16,6 +17,8 @@ app.use(express.json({ limit: '10mb' }));
 app.use(morgan('dev'));
 
 app.get('/health', (_req, res) => res.json({ status: 'ok', service: 'AI Personal Shopper API' }));
+app.use('/api/auth', rateLimit(20, 60_000));
+app.use('/api/ai', rateLimit(30, 60_000));
 app.use('/api', routes);
 
 app.use(notFound);
