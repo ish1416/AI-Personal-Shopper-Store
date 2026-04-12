@@ -1,18 +1,19 @@
-import OpenAI from 'openai';
+import Groq from 'groq-sdk';
+import { ChatCompletionMessageParam } from 'groq-sdk/resources/chat/completions';
 import { ChatSessionRepository, ChatMessageRepository } from '../repositories/ChatRepository';
 import { StyleProfileRepository } from '../repositories/StyleProfileRepository';
 import { ProductRepository } from '../repositories/ProductRepository';
 import { Types } from 'mongoose';
 
 export class AIStylistService {
-  private openai: OpenAI;
+  private groq: Groq;
   private sessionRepo = new ChatSessionRepository();
   private messageRepo = new ChatMessageRepository();
   private profileRepo = new StyleProfileRepository();
   private productRepo = new ProductRepository();
 
   constructor() {
-    this.openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    this.groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
   }
 
   async createSession(userId: string, title = 'New Chat') {
@@ -44,7 +45,7 @@ export class AIStylistService {
 
     // Get recent conversation history
     const history = await this.messageRepo.getRecentMessages(sessionId, 8);
-    const messages: OpenAI.Chat.ChatCompletionMessageParam[] = history
+    const messages: ChatCompletionMessageParam[] = history
       .reverse()
       .map((m) => ({ role: m.senderType === 'user' ? 'user' : 'assistant', content: m.messageContent }));
 
@@ -61,8 +62,8 @@ ${productContext || 'No specific products found, suggest general style advice.'}
 
 Be warm, stylish, and concise. Recommend specific products when relevant. Always mention product names and prices.`;
 
-    const response = await this.openai.chat.completions.create({
-      model: 'gpt-4o-mini', // fallback to gpt-3.5-turbo if quota exceeded
+    const response = await this.groq.chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
       messages: [{ role: 'system', content: systemPrompt }, ...messages, { role: 'user', content: userMessage }],
       max_tokens: 500,
       temperature: 0.8,
