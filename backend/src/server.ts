@@ -10,7 +10,7 @@ import { errorHandler, notFound } from './middleware/errorHandler';
 import { rateLimit } from './middleware/rateLimit';
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5005;
 
 app.use(cors({ origin: ['http://localhost:3000', 'http://localhost:3001'], credentials: true }));
 app.use(express.json({ limit: '10mb' }));
