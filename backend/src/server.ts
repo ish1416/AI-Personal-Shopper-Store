@@ -12,7 +12,7 @@ import { rateLimit } from './middleware/rateLimit';
 const app = express();
 const PORT = process.env.PORT || 5005;
 
-app.use(cors({ origin: ['http://localhost:3000', 'http://localhost:3001'], credentials: true }));
+app.use(cors({ origin: ['http://localhost:3000', 'http://localhost:3001', 'http://34.93.151.212:3001'], credentials: true }));
 app.use(express.json({ limit: '10mb' }));
 app.use(morgan('dev'));
 
